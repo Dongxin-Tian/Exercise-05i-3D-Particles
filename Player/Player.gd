@@ -1,6 +1,7 @@
 extends KinematicBody
 
 onready var Camera = $Pivot/Camera
+onready var explosion = preload("res://Explosion.tscn")
 
 var gravity = -30
 var max_speed = 8
@@ -23,4 +24,7 @@ func _physics_process(_delta):
 		if $Pivot/RayCast.is_colliding():
 			var target = $Pivot/RayCast.get_collider()
 			if target.is_in_group("target"):
+				var e = explosion.instance()
+				get_tree().current_scene.add_child_below_node(get_node("/root/Game/Player"), e)
+				e.global_transform = target.global_transform
 				target.die()
